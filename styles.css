@@ -1,0 +1,285 @@
+@font-face {
+    font-family: 'Oswald';
+    src: url('fonts/Oswald-Regular.ttf') format('truetype'); /* Ruta a la fuente local */
+    font-weight: 400; /* Regular */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: url('fonts/Oswald-Bold.ttf') format('truetype'); /* Ruta a la versión en negrita */
+    font-weight: 700; /* Bold */
+    font-style: normal;
+}
+
+
+body {
+    font-family: 'Oswald', Arial, sans-serif;
+    background-color: #f0f4f8; /* Gris muy claro para el fondo */
+    margin: 0;
+    padding: 20px;
+    color: #2d3748; /* Gris oscuro para el texto principal */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    align-items: center;
+    color: #2f855a; /* Verde oscuro para el título principal */
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    padding-bottom: 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #48bb78, #2f855a); /* Gradiente de verde */
+    border-radius: 2px;
+}
+
+.title-wrapper {
+    background-color: rgba(47, 133, 90, 0.1); /* Verde muy claro y transparente */
+    border-radius: 10px;
+    padding: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(5px);
+    align-items: center;
+}
+
+.month-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    background-color: #e2e8f0; /* Gris claro */
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.month-selector button {
+    background-color: #3d3f3e; /* Verde medio */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 0 0 auto;
+    min-width: 44px;
+    max-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.month-selector button:hover {
+    background-color: #2f855a; /* Verde oscuro al hover */
+}
+
+#current-month {
+    font-size: 1.2rem;
+    color: #2d3748; /* Gris oscuro */
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 150px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff; /* Blanco */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px 20px 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    color: #2d3748; /* Gris oscuro */
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.item-list {
+    margin-bottom: 1rem;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+input[type="text"], input[type="number"] {
+    padding: 5px;
+    border: 1px solid #cbd5e0; /* Gris claro */
+    border-radius: 4px;
+    background-color: #f7fafc; /* Gris muy claro */
+    color: #2d3748; /* Gris oscuro */
+}
+
+input[type="text"].descripcion-ingreso,
+input[type="text"].descripcion-gasto {
+    width: 60%;
+    margin-right: 5px;
+}
+
+input[type="text"].valor-ingreso,
+input[type="text"].valor-gasto {
+    width: 35%;
+}
+
+.delete-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.delete-icon:hover {
+    opacity: 0.7;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#agregar-ingreso {
+    background-color: #38a169; /* Verde medio */
+}
+
+#agregar-ingreso:hover {
+    background-color: #2f855a; /* Verde oscuro */
+}
+
+#agregar-gasto {
+    background-color: #e53e3e; /* Rojo suave */
+}
+
+#agregar-gasto:hover {
+    background-color: #c53030; /* Rojo más oscuro */
+}
+
+.total {
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #cbd5e0; /* Gris claro */
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    color: #2d3748; /* Gris oscuro */
+}
+
+#balance {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 5px;
+    color: #2f855a; /* Verde oscuro para el balance */
+}
+
+.balance-card h2 {
+    background-color: #5e96ff; /* Verde medio */
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.title-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.section-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.button-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+}
+
+@media (max-width: 480px) {
+    .month-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #current-month {
+        order: 0;
+        width: 100%;
+        margin-bottom: 10px;
+        min-width: unset;
+    }
+
+    .month-selector button {
+        width: 100%;
+        max-width: none;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .item {
+        flex-wrap: wrap;
+    }
+
+    input[type="text"].descripcion-ingreso,
+    input[type="text"].descripcion-gasto,
+    input[type="text"].valor-ingreso,
+    input[type="text"].valor-gasto {
+        width: calc(85% - 5px);
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
+    .delete-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: auto;
+    }
+}

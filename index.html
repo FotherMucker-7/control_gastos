@@ -8,117 +8,31 @@
     <meta name="theme-color" content="#4f46e5">
     <link rel="icon" type="image/png" sizes="32x32" href="icon-192x192.png">
     <link rel="apple-touch-icon" href="icon-192x192.png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            color: #1f2937;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #374151;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .item-list {
-            margin-bottom: 1rem;
-        }
-        .item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-        input[type="text"], input[type="number"] {
-            width: calc(50% - 5px);
-            padding: 5px;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #agregar-ingreso {
-            background-color: #10B981; /* Verde */
-        }
-        #agregar-ingreso:hover {
-            background-color: #059669;
-        }
-        #agregar-gasto {
-            background-color: #EF4444; /* Rojo */
-        }
-        #agregar-gasto:hover {
-            background-color: #DC2626;
-        }
-        .total {
-            margin-top: 1rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid #e5e7eb;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
-        #balance {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .balance-card h2 {
-            background-color: #3B82F6; /* Azul */
-            color: white;
-            padding: 10px;
-            border-radius: 4px;
-            margin: -20px -20px 20px -20px;
-        }
-        @media (max-width: 640px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>CONTROL DE GASTOS</h1>
+        <div class="title-wrapper">
+            <h1><img src="icons/wallet.svg" alt="Wallet Icon" class="title-icon"> CONTROL DE GASTOS</h1>
+        </div>
+
+        <div class="month-selector">
+            <button id="prev-month">&lt;&lt;&lt;</button>
+            <span id="current-month">Octubre 2024</span>
+            <button id="next-month">&gt;&gt;&gt;</button>
+        </div>
         
         <div class="grid">
             <div class="card">
-                <h2>Ingresos</h2>
+                <h2><img src="icons/income.svg" alt="Income Icon" class="section-icon"> Ingresos</h2>
                 <div id="ingresos-list" class="item-list">
                     <div class="item">
                         <input type="text" placeholder="Descripción" class="descripcion-ingreso">
                         <input type="number" placeholder="Valor" class="valor-ingreso">
+                        <img src="icons/delete.svg" alt="Delete Icon" class="delete-icon">
                     </div>
                 </div>
-                <button id="agregar-ingreso">Agregar</button>
+                <button id="agregar-ingreso"><img src="icons/add.svg" alt="Add Icon" class="button-icon"> Agregar</button>
                 <div class="total">
                     <span>TOTAL INGRESOS</span>
                     <span id="total-ingresos">$0</span>
@@ -126,14 +40,15 @@
             </div>
             
             <div class="card">
-                <h2>Gastos</h2>
+                <h2><img src="icons/expense.svg" alt="Expense Icon" class="section-icon"> Gastos</h2>
                 <div id="gastos-list" class="item-list">
                     <div class="item">
                         <input type="text" placeholder="Descripción" class="descripcion-gasto">
                         <input type="number" placeholder="Valor" class="valor-gasto">
+                        <img src="icons/delete.svg" alt="Delete Icon" class="delete-icon">
                     </div>
                 </div>
-                <button id="agregar-gasto">Agregar</button>
+                <button id="agregar-gasto"><img src="icons/add.svg" alt="Add Icon" class="button-icon"> Agregar</button>
                 <div class="total">
                     <span>TOTAL GASTOS</span>
                     <span id="total-gastos">$0</span>
@@ -141,119 +56,11 @@
             </div>
         </div>
         
-        <div class="card balance-card" style="margin-top: 20px;">
-            <h2>BALANCE</h2>
+        <div class="card balance-card">
+            <h2><img src="icons/balance.svg" alt="Balance Icon" class="section-icon"> BALANCE</h2>
             <p id="balance">$0</p>
         </div>
     </div>
-
-    <script>
-        let datos = {
-            ingresos: [{descripcion: '', valor: ''}],
-            gastos: [{descripcion: '', valor: ''}]
-        };
-
-        function cargarDatos() {
-            const datosGuardados = localStorage.getItem('controlGastos');
-            if (datosGuardados) {
-                datos = JSON.parse(datosGuardados);
-            }
-            renderizarItems('ingresos-list', datos.ingresos);
-            renderizarItems('gastos-list', datos.gastos);
-            actualizarTotales();
-        }
-
-        function guardarDatos() {
-            localStorage.setItem('controlGastos', JSON.stringify(datos));
-        }
-
-        function renderizarItems(listId, items) {
-            const list = document.getElementById(listId);
-            list.innerHTML = '';
-            items.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'item';
-                div.innerHTML = `
-                    <input type="text" value="${item.descripcion}" placeholder="Descripción" class="descripcion-${listId === 'ingresos-list' ? 'ingreso' : 'gasto'}">
-                    <input type="text" value="${formatearNumeroEnTiempoReal(item.valor.toString())}" placeholder="Valor" class="valor-${listId === 'ingresos-list' ? 'ingreso' : 'gasto'}">
-                `;
-                list.appendChild(div);
-
-                const valorInput = div.querySelector('input[type="text"].valor-' + (listId === 'ingresos-list' ? 'ingreso' : 'gasto'));
-                valorInput.addEventListener('input', (e) => {
-                    let formateado = formatearNumeroEnTiempoReal(e.target.value);
-                    e.target.value = formateado;
-                    item.valor = desformatearNumero(formateado);
-                    actualizarTotales();
-                    guardarDatos();
-                });
-
-                div.querySelector('input[type="text"].descripcion-' + (listId === 'ingresos-list' ? 'ingreso' : 'gasto')).addEventListener('input', (e) => {
-                    item.descripcion = e.target.value;
-                    guardarDatos();
-                });
-            });
-        }
-
-        // Función existente para formatear números
-        function formatearNumero(numero) {
-            return '$' + numero.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
-        // Función para formatear el número en tiempo real (sin el símbolo $)
-        function formatearNumeroEnTiempoReal(numero) {
-            // Elimina cualquier caracter que no sea dígito
-            let valor = numero.replace(/\D/g, '');
-            // Formatea el número sin el símbolo $
-            return valor.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
-
-        // Función para desformatear el número (quitar los puntos)
-        function desformatearNumero(numeroFormateado) {
-            return numeroFormateado.replace(/\./g, '');
-        }
-
-
-        function actualizarTotales() {
-            let totalIngresos = datos.ingresos.reduce((sum, item) => sum + (parseInt(item.valor) || 0), 0);
-            let totalGastos = datos.gastos.reduce((sum, item) => sum + (parseInt(item.valor) || 0), 0);
-
-            document.getElementById('total-ingresos').textContent = formatearNumero(totalIngresos);
-            document.getElementById('total-gastos').textContent = formatearNumero(totalGastos);
-            
-            const balance = totalIngresos - totalGastos;
-            document.getElementById('balance').textContent = formatearNumero(balance);
-            document.getElementById('balance').style.color = balance >= 0 ? 'green' : 'red';
-        }
-
-        function agregarItem(tipo) {
-            datos[tipo].push({ descripcion: '', valor: '' });
-            renderizarItems(`${tipo}-list`, datos[tipo]);
-            actualizarTotales();
-            guardarDatos();
-        }
-
-
-        // Asegúrate de llamar a cargarDatos() al inicio para cargar los campos predeterminados
-        document.addEventListener('DOMContentLoaded', cargarDatos);
-
-        document.getElementById('agregar-ingreso').addEventListener('click', () => agregarItem('ingresos'));
-        document.getElementById('agregar-gasto').addEventListener('click', () => agregarItem('gastos'));
-
-        cargarDatos();
-
-        // Registrar el Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado con éxito:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Falló el registro del Service Worker:', error);
-                    });
-            });
-        }
-    </script>
+    <script src="script.js"></script>    
 </body>
 </html>
