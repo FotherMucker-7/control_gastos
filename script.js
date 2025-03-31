@@ -139,6 +139,9 @@ function mostrarMensajeConfirmacion(elemento, mensaje) {
 function programarNotificacion(gasto, mes) {
   if (!notificacionesPermitidas) return;
 
+  // Verificar que el gasto tenga recordatorio
+  if (!gasto.recordatorio) return;
+
   const fechaRecordatorio = new Date(gasto.recordatorio);
   const ahora = new Date();
 
@@ -177,13 +180,16 @@ function verificarRecordatorios() {
 
   // Programar nuevas notificaciones
   Object.entries(datos).forEach(([mes, mesDatos]) => {
-    const gastosFijos = mesDatos.gastos.filter(
-      (gasto) => gasto.recurrente && gasto.recordatorio
-    );
+    // Verificar que mesDatos y gastos existan
+    if (mesDatos && mesDatos.gastos) {
+      const gastosFijos = mesDatos.gastos.filter(
+        (gasto) => gasto.recurrente && gasto.recordatorio
+      );
 
-    gastosFijos.forEach((gasto) => {
-      programarNotificacion(gasto, mes);
-    });
+      gastosFijos.forEach((gasto) => {
+        programarNotificacion(gasto, mes);
+      });
+    }
   });
 }
 

@@ -45,6 +45,11 @@ self.addEventListener("activate", (event) => {
 
 // Interceptar peticiones
 self.addEventListener("fetch", (event) => {
+  // Ignorar peticiones de extensiones de Chrome
+  if (event.request.url.startsWith("chrome-extension://")) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       // Si la respuesta está en caché, la devolvemos

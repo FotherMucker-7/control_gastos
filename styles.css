@@ -172,7 +172,7 @@ input[type="text"],
 input[type="number"],
 input[type="date"] {
   padding: 8px; /* Aumentado para mejor área táctil */
-  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
+  min-height: 30px; /* Añadido para cumplir con estándares de accesibilidad */
   touch-action: manipulation;
 }
 
@@ -295,7 +295,6 @@ button {
 .gasto-options {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .recurrente-label {
@@ -522,8 +521,8 @@ button {
 }
 
 .recordatorio-icon img {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
 }
 
 .recordatorio-icon.activo {
@@ -590,7 +589,7 @@ input[type="text"],
 input[type="number"],
 input[type="date"] {
   padding: 8px; /* Aumentado para mejor área táctil */
-  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
+  min-height: 30px; /* Añadido para cumplir con estándares de accesibilidad */
   touch-action: manipulation;
 }
 
