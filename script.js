@@ -243,6 +243,22 @@ function renderizarItems(listId, items) {
         `;
     list.appendChild(div);
 
+    // Función para manejar eventos táctiles y de click
+    function addTouchAndClickHandler(element, handler) {
+      if (!element) return;
+
+      element.addEventListener(
+        "touchstart",
+        (e) => {
+          e.preventDefault();
+          handler();
+        },
+        { passive: false }
+      );
+
+      element.addEventListener("click", handler);
+    }
+
     const valorInput = div.querySelector(
       'input[type="text"].valor-' +
         (listId === "ingresos-list" ? "ingreso" : "gasto")
@@ -298,7 +314,7 @@ function renderizarItems(listId, items) {
         guardarDatos();
       });
 
-      recordatorioIcon.addEventListener("click", () => {
+      addTouchAndClickHandler(recordatorioIcon, () => {
         if (item.recordatorio) {
           fechaInput.value = "";
           item.recordatorio = null;
@@ -314,7 +330,7 @@ function renderizarItems(listId, items) {
       });
     }
 
-    div.querySelector(".delete-icon").addEventListener("click", () => {
+    addTouchAndClickHandler(div.querySelector(".delete-icon"), () => {
       if (confirm("¿Estás seguro de que deseas eliminar este ítem?")) {
         items.splice(index, 1);
         renderizarItems(listId, items);
@@ -580,25 +596,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nextMonthBtn = document.getElementById("next-month");
   const exportarExcelBtn = document.getElementById("exportar-excel");
 
-  if (agregarIngresoBtn) {
-    agregarIngresoBtn.addEventListener("click", () => agregarItem("ingresos"));
+  // Función para manejar eventos táctiles y de click
+  function addTouchAndClickHandler(element, handler) {
+    if (!element) return;
+
+    // Prevenir comportamiento por defecto del toque
+    element.addEventListener(
+      "touchstart",
+      (e) => {
+        e.preventDefault();
+        handler();
+      },
+      { passive: false }
+    );
+
+    // Mantener el evento click para compatibilidad
+    element.addEventListener("click", handler);
   }
 
-  if (agregarGastoBtn) {
-    agregarGastoBtn.addEventListener("click", () => agregarItem("gastos"));
-  }
-
-  if (prevMonthBtn) {
-    prevMonthBtn.addEventListener("click", () => cambiarMes(-1));
-  }
-
-  if (nextMonthBtn) {
-    nextMonthBtn.addEventListener("click", () => cambiarMes(1));
-  }
-
-  if (exportarExcelBtn) {
-    exportarExcelBtn.addEventListener("click", exportarAExcel);
-  }
+  addTouchAndClickHandler(agregarIngresoBtn, () => agregarItem("ingresos"));
+  addTouchAndClickHandler(agregarGastoBtn, () => agregarItem("gastos"));
+  addTouchAndClickHandler(prevMonthBtn, () => cambiarMes(-1));
+  addTouchAndClickHandler(nextMonthBtn, () => cambiarMes(1));
+  addTouchAndClickHandler(exportarExcelBtn, exportarAExcel);
 });
 
 if ("serviceWorker" in navigator) {

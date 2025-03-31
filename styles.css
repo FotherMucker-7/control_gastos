@@ -99,19 +99,21 @@ h1::after {
 }
 
 .month-selector button {
-  background-color: #3d3f3e; /* Verde medio */
+  background-color: #3d3f3e;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 12px 20px; /* Aumentado para mejor área táctil */
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
   flex: 0 0 auto;
-  min-width: 44px;
+  min-width: 60px; /* Aumentado para mejor área táctil */
+  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
   max-width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+  -webkit-tap-highlight-color: transparent; /* Elimina el resaltado táctil en iOS */
 }
 
 .month-selector button:hover {
@@ -167,12 +169,11 @@ h2 {
 }
 
 input[type="text"],
-input[type="number"] {
-  padding: 5px;
-  border: 1px solid #cbd5e0; /* Gris claro */
-  border-radius: 4px;
-  background-color: #f7fafc; /* Gris muy claro */
-  color: #2d3748; /* Gris oscuro */
+input[type="number"],
+input[type="date"] {
+  padding: 8px; /* Aumentado para mejor área táctil */
+  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
+  touch-action: manipulation;
 }
 
 input[type="text"].descripcion-ingreso,
@@ -186,11 +187,12 @@ input[type="text"].valor-gasto {
   width: 35%;
 }
 
-.delete-icon {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  flex-shrink: 0;
+.delete-icon,
+.recordatorio-icon {
+  width: 24px; /* Aumentado */
+  height: 24px; /* Aumentado */
+  padding: 8px; /* Añadido para aumentar área táctil */
+  touch-action: manipulation;
 }
 
 .delete-icon:hover {
@@ -199,12 +201,35 @@ input[type="text"].valor-gasto {
 
 button {
   width: 100%;
-  padding: 10px;
+  padding: 12px; /* Aumentado para mejor área táctil */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  -webkit-tap-highlight-color: transparent; /* Elimina el resaltado táctil en iOS */
+}
+
+#agregar-ingreso,
+#agregar-gasto {
+  width: 100%;
+  padding: 12px; /* Aumentado para mejor área táctil */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  -webkit-tap-highlight-color: transparent; /* Elimina el resaltado táctil en iOS */
 }
 
 #agregar-ingreso {
@@ -552,4 +577,36 @@ button {
   .recurrencia-label {
     font-size: 0.8rem;
   }
+}
+
+/* Asegurar que los botones sean clickeables en móviles */
+button {
+  touch-action: manipulation; /* Mejora la respuesta táctil */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Asegurar que los inputs sean fáciles de tocar en móviles */
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  padding: 8px; /* Aumentado para mejor área táctil */
+  min-height: 44px; /* Añadido para cumplir con estándares de accesibilidad */
+  touch-action: manipulation;
+}
+
+/* Asegurar que los checkboxes sean fáciles de tocar */
+input[type="checkbox"] {
+  width: 20px; /* Aumentado */
+  height: 20px; /* Aumentado */
+  min-height: 44px; /* Área táctil mínima */
+  touch-action: manipulation;
+}
+
+/* Asegurar que los iconos sean fáciles de tocar */
+.delete-icon,
+.recordatorio-icon {
+  width: 24px; /* Aumentado */
+  height: 24px; /* Aumentado */
+  padding: 8px; /* Añadido para aumentar área táctil */
+  touch-action: manipulation;
 }
