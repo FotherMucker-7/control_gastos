@@ -94,20 +94,10 @@
                   <span>Fijo</span>
                 </label>
                 <div class="recordatorio-container">
-                  <input type="date" class="fecha-recordatorio" />
+                  <input type="date" class="fecha-recordatorio" value="${item.recordatorio || ""}">
                   <div class="recordatorio-options">
-                    <label class="recurrencia-label">
-                      <input type="checkbox" class="recurrencia-checkbox" />
-                      <span>Mensual</span>
-                    </label>
-                    <span
-                      class="recordatorio-icon"
-                      title="Activar recordatorio"
-                    >
-                      <img
-                        src="icons/notification.svg"
-                        alt="Notification Icon"
-                      />
+                    <span class="recordatorio-icon ${item.recordatorio ? "activo" : ""}" title="Activar recordatorio">
+                      <img src="icons/notification.svg" alt="Notification Icon">
                     </span>
                   </div>
                 </div>

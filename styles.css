@@ -303,6 +303,7 @@ button {
   gap: 5px;
   cursor: pointer;
   user-select: none;
+  padding-right: 5px;
 }
 
 .recurrente-label input[type="checkbox"] {

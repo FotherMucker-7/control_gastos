@@ -102,7 +102,6 @@ function inicializarMes(mes) {
           valor: "",
           recurrente: false,
           recordatorio: null,
-          recordatorioRecurrente: false,
           categoria: "Sin categoría",
           notas: "",
           fechaCreacion: new Date().toISOString(),
@@ -225,12 +224,6 @@ function renderizarItems(listId, items) {
                           item.recordatorio || ""
                         }">
                         <div class="recordatorio-options">
-                            <label class="recurrencia-label">
-                                <input type="checkbox" class="recurrencia-checkbox" ${
-                                  item.recordatorioRecurrente ? "checked" : ""
-                                }>
-                                <span>Mensual</span>
-                            </label>
                             <span class="recordatorio-icon ${
                               item.recordatorio ? "activo" : ""
                             }" title="Activar recordatorio">
@@ -296,12 +289,6 @@ function renderizarItems(listId, items) {
 
       const fechaInput = div.querySelector(".fecha-recordatorio");
       const recordatorioIcon = div.querySelector(".recordatorio-icon");
-      const recurrenciaCheckbox = div.querySelector(".recurrencia-checkbox");
-
-      recurrenciaCheckbox.addEventListener("change", (e) => {
-        item.recordatorioRecurrente = e.target.checked;
-        guardarDatos();
-      });
 
       fechaInput.addEventListener("change", (e) => {
         if (e.target.value) {
@@ -311,9 +298,7 @@ function renderizarItems(listId, items) {
           mostrarMensajeConfirmacion(div, "Recordatorio activado");
         } else {
           item.recordatorio = null;
-          item.recordatorioRecurrente = false;
           recordatorioIcon.classList.remove("activo");
-          recurrenciaCheckbox.checked = false;
           cancelarNotificacion(item, mesActual);
           mostrarMensajeConfirmacion(div, "Recordatorio desactivado");
         }
@@ -324,9 +309,7 @@ function renderizarItems(listId, items) {
         if (item.recordatorio) {
           fechaInput.value = "";
           item.recordatorio = null;
-          item.recordatorioRecurrente = false;
           recordatorioIcon.classList.remove("activo");
-          recurrenciaCheckbox.checked = false;
           cancelarNotificacion(item, mesActual);
           mostrarMensajeConfirmacion(div, "Recordatorio desactivado");
           guardarDatos();
