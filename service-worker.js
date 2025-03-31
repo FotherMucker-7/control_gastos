@@ -1,36 +1,85 @@
-const CACHE_NAME = 'gastos-app-v1';
+const CACHE_NAME = "gastos-app-v1";
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/icon-192x192.png',
-  '/icon-512x512.png'
+  "/",
+  "/index.html",
+  "/styles.css",
+  "/script.js",
+  "/manifest.json",
+  "/icon-192x192.png",
+  "/icon-512x512.png",
+  "/icons/wallet.svg",
+  "/icons/income.svg",
+  "/icons/expense.svg",
+  "/icons/balance.svg",
+  "/icons/chart.svg",
+  "/icons/add.svg",
+  "/icons/delete.svg",
+  "/icons/notification.svg",
+  "/icons/excel.svg",
 ];
 
-self.addEventListener('install', event => {
+// Instalación del Service Worker
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache).catch(err => {
-          console.error('Error caching files:', err);
-          // Continue with installation even if some files fail to cache
-          return Promise.resolve();
-        });
-      })
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("Cache abierto");
+      return cache.addAll(urlsToCache);
+    })
   );
 });
 
-self.addEventListener('fetch', event => {
+// Activación del Service Worker
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+// Interceptar peticiones
+self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
+    caches.match(event.request).then((response) => {
+      // Si la respuesta está en caché, la devolvemos
+      if (response) {
+        return response;
+      }
+
+      // Si no está en caché, hacemos la petición
+      return fetch(event.request)
+        .then((response) => {
+          // Verificar si la respuesta es válida
+          if (
+            !response ||
+            response.status !== 200 ||
+            response.type !== "basic"
+          ) {
+            return response;
+          }
+
+          // Clonar la respuesta
+          const responseToCache = response.clone();
+
+          // Guardar en caché
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+
           return response;
-        }
-        return fetch(event.request).catch(() => {
-          // If both cache and network fail, you might want to show an offline page here
-          console.log('Fetch failed; returning offline page instead.');
+        })
+        .catch(() => {
+          // Si falla la petición, intentamos devolver una página offline
+          if (event.request.mode === "navigate") {
+            return caches.match("/index.html");
+          }
         });
-      })
+    })
   );
 });

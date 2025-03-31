@@ -1,66 +1,176 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Control de Gastos</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4f46e5">
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-192x192.png">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
-    <link href="styles.css" rel="stylesheet">
-</head>
-<body>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#4f46e5" />
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-192x192.png" />
+    <link rel="apple-touch-icon" href="icon-192x192.png" />
+    <link href="styles.css" rel="stylesheet" />
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
     <div class="container">
-        <div class="title-wrapper">
-            <h1><img src="icons/wallet.svg" alt="Wallet Icon" class="title-icon"> CONTROL DE GASTOS</h1>
+      <div class="title-wrapper">
+        <h1>
+          <img src="icons/wallet.svg" alt="Wallet Icon" class="title-icon" />
+          CONTROL DE GASTOS
+        </h1>
+        <div class="export-container">
+          <select id="export-type" class="export-select">
+            <option value="mes">Mes Actual</option>
+            <option value="todos">Todos los Meses</option>
+          </select>
+          <button id="exportar-excel" class="export-button">
+            <img src="icons/excel.svg" alt="Excel Icon" class="button-icon" />
+            Exportar a Excel
+          </button>
+        </div>
+      </div>
+
+      <div class="month-selector">
+        <button id="prev-month">&lt;&lt;&lt;</button>
+        <span id="current-month">Octubre 2024</span>
+        <button id="next-month">&gt;&gt;&gt;</button>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>
+            <img
+              src="icons/income.svg"
+              alt="Income Icon"
+              class="section-icon"
+            />
+            Ingresos
+          </h2>
+          <div id="ingresos-list" class="item-list">
+            <div class="item">
+              <input
+                type="text"
+                placeholder="Descripción"
+                class="descripcion-ingreso"
+              />
+              <input type="number" placeholder="Valor" class="valor-ingreso" />
+              <img
+                src="icons/delete.svg"
+                alt="Delete Icon"
+                class="delete-icon"
+              />
+            </div>
+          </div>
+          <button id="agregar-ingreso">
+            <img src="icons/add.svg" alt="Add Icon" class="button-icon" />
+            Agregar
+          </button>
+          <div class="total">
+            <span>TOTAL INGRESOS</span>
+            <span id="total-ingresos">$0</span>
+          </div>
         </div>
 
-        <div class="month-selector">
-            <button id="prev-month">&lt;&lt;&lt;</button>
-            <span id="current-month">Octubre 2024</span>
-            <button id="next-month">&gt;&gt;&gt;</button>
-        </div>
-        
-        <div class="grid">
-            <div class="card">
-                <h2><img src="icons/income.svg" alt="Income Icon" class="section-icon"> Ingresos</h2>
-                <div id="ingresos-list" class="item-list">
-                    <div class="item">
-                        <input type="text" placeholder="Descripción" class="descripcion-ingreso">
-                        <input type="number" placeholder="Valor" class="valor-ingreso">
-                        <img src="icons/delete.svg" alt="Delete Icon" class="delete-icon">
-                    </div>
+        <div class="card">
+          <h2>
+            <img
+              src="icons/expense.svg"
+              alt="Expense Icon"
+              class="section-icon"
+            />
+            Gastos
+          </h2>
+          <div id="gastos-list" class="item-list">
+            <div class="item">
+              <input
+                type="text"
+                placeholder="Descripción"
+                class="descripcion-gasto"
+              />
+              <input type="number" placeholder="Valor" class="valor-gasto" />
+              <div class="gasto-options">
+                <label class="recurrente-label">
+                  <input type="checkbox" class="gasto-recurrente" />
+                  <span>Fijo</span>
+                </label>
+                <div class="recordatorio-container">
+                  <input type="date" class="fecha-recordatorio" />
+                  <div class="recordatorio-options">
+                    <label class="recurrencia-label">
+                      <input type="checkbox" class="recurrencia-checkbox" />
+                      <span>Mensual</span>
+                    </label>
+                    <span
+                      class="recordatorio-icon"
+                      title="Activar recordatorio"
+                    >
+                      <img
+                        src="icons/notification.svg"
+                        alt="Notification Icon"
+                      />
+                    </span>
+                  </div>
                 </div>
-                <button id="agregar-ingreso"><img src="icons/add.svg" alt="Add Icon" class="button-icon"> Agregar</button>
-                <div class="total">
-                    <span>TOTAL INGRESOS</span>
-                    <span id="total-ingresos">$0</span>
-                </div>
+                <div class="mensaje-confirmacion"></div>
+                <img
+                  src="icons/delete.svg"
+                  alt="Delete Icon"
+                  class="delete-icon"
+                />
+              </div>
             </div>
-            
-            <div class="card">
-                <h2><img src="icons/expense.svg" alt="Expense Icon" class="section-icon"> Gastos</h2>
-                <div id="gastos-list" class="item-list">
-                    <div class="item">
-                        <input type="text" placeholder="Descripción" class="descripcion-gasto">
-                        <input type="number" placeholder="Valor" class="valor-gasto">
-                        <img src="icons/delete.svg" alt="Delete Icon" class="delete-icon">
-                    </div>
-                </div>
-                <button id="agregar-gasto"><img src="icons/add.svg" alt="Add Icon" class="button-icon"> Agregar</button>
-                <div class="total">
-                    <span>TOTAL GASTOS</span>
-                    <span id="total-gastos">$0</span>
-                </div>
+          </div>
+          <button id="agregar-gasto">
+            <img src="icons/add.svg" alt="Add Icon" class="button-icon" />
+            Agregar
+          </button>
+          <div class="total">
+            <span>TOTAL GASTOS</span>
+            <span id="total-gastos">$0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card balance-card">
+        <h2>
+          <img
+            src="icons/balance.svg"
+            alt="Balance Icon"
+            class="section-icon"
+          />
+          BALANCE
+        </h2>
+        <p id="balance">$0</p>
+      </div>
+
+      <div class="card summary-card">
+        <h2>
+          <img src="icons/chart.svg" alt="Chart Icon" class="section-icon" />
+          RESUMEN DE GASTOS
+        </h2>
+        <div class="summary-content">
+          <div class="summary-section">
+            <h3>Top 5 Gastos</h3>
+            <div id="top-gastos" class="top-gastos-list"></div>
+          </div>
+          <div class="summary-section">
+            <h3>Distribución de Gastos</h3>
+            <div class="gastos-distribucion">
+              <div class="distribucion-item">
+                <span>Gastos Fijos:</span>
+                <span id="total-gastos-fijos">$0</span>
+                <span id="porcentaje-fijos">(0%)</span>
+              </div>
+              <div class="distribucion-item">
+                <span>Gastos Variables:</span>
+                <span id="total-gastos-variables">$0</span>
+                <span id="porcentaje-variables">(0%)</span>
+              </div>
             </div>
+          </div>
         </div>
-        
-        <div class="card balance-card">
-            <h2><img src="icons/balance.svg" alt="Balance Icon" class="section-icon"> BALANCE</h2>
-            <p id="balance">$0</p>
-        </div>
+      </div>
     </div>
-    <script src="script.js"></script>    
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
