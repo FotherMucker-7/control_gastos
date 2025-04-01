@@ -82,26 +82,33 @@
           </h2>
           <div id="gastos-list" class="item-list">
             <div class="item">
-              <input
-                type="text"
-                placeholder="Descripción"
-                class="descripcion-gasto"
-              />
-              <input type="number" placeholder="Valor" class="valor-gasto" />
+              <div class="gastos-input">
+                <input
+                  type="text"
+                  placeholder="Descripción"
+                  class="descripcion-gasto"
+                />
+                <input type="number" placeholder="Valor" class="valor-gasto" />
+              </div>
               <div class="gasto-options">
                 <label class="recurrente-label">
                   <input type="checkbox" class="gasto-recurrente" />
                   <span>Fijo</span>
                 </label>
                 <div class="recordatorio-container">
-                  <input type="date" class="fecha-recordatorio" value="${item.recordatorio || ""}">
+                  <input type="date" class="fecha-recordatorio" />
                   <div class="recordatorio-options">
-                    <span class="recordatorio-icon ${item.recordatorio ? "activo" : ""}" title="Activar recordatorio">
-                      <img src="icons/notification.svg" alt="Notification Icon">
+                    <span
+                      class="recordatorio-icon"
+                      title="Activar recordatorio"
+                    >
+                      <img
+                        src="icons/notification.svg"
+                        alt="Notification Icon"
+                      />
                     </span>
                   </div>
                 </div>
-                <div class="mensaje-confirmacion"></div>
                 <img
                   src="icons/delete.svg"
                   alt="Delete Icon"
@@ -161,6 +168,7 @@
         </div>
       </div>
     </div>
+    <div class="mensaje-confirmacion"></div>
     <script src="script.js"></script>
   </body>
 </html>

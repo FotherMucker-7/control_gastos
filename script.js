@@ -125,14 +125,14 @@ function guardarDatos() {
   localStorage.setItem("controlGastos", JSON.stringify(datos));
 }
 
-function mostrarMensajeConfirmacion(elemento, mensaje) {
-  const mensajeElement = elemento.querySelector(".mensaje-confirmacion");
+function mostrarMensajeConfirmacion(mensaje) {
+  const mensajeElement = document.querySelector(".mensaje-confirmacion");
   mensajeElement.textContent = mensaje;
   mensajeElement.classList.add("visible");
 
   setTimeout(() => {
     mensajeElement.classList.remove("visible");
-  }, 3000);
+  }, 1500);
 }
 
 function programarNotificacion(gasto, mes) {
@@ -199,16 +199,18 @@ function renderizarItems(listId, items) {
     const div = document.createElement("div");
     div.className = "item";
     div.innerHTML = `
-            <input type="text" value="${
-              item.descripcion
-            }" placeholder="Descripción" class="descripcion-${
+            <div class="gastos-input">
+              <input type="text" value="${
+                item.descripcion
+              }" placeholder="Descripción" class="descripcion-${
       listId === "ingresos-list" ? "ingreso" : "gasto"
     }">
-            <input type="text" value="${formatearNumeroEnTiempoReal(
-              item.valor.toString()
-            )}" placeholder="Valor" class="valor-${
+              <input type="text" value="${formatearNumeroEnTiempoReal(
+                item.valor.toString()
+              )}" placeholder="Valor" class="valor-${
       listId === "ingresos-list" ? "ingreso" : "gasto"
     }">
+            </div>
             ${
               listId === "gastos-list"
                 ? `
@@ -231,7 +233,6 @@ function renderizarItems(listId, items) {
                             </span>
                         </div>
                     </div>
-                    <div class="mensaje-confirmacion"></div>
                     <img src="icons/delete.svg" alt="Delete Icon" class="delete-icon">
                 </div>
             `
@@ -295,12 +296,12 @@ function renderizarItems(listId, items) {
           item.recordatorio = e.target.value;
           recordatorioIcon.classList.add("activo");
           programarNotificacion(item, mesActual);
-          mostrarMensajeConfirmacion(div, "Recordatorio activado");
+          mostrarMensajeConfirmacion("Recordatorio activado");
         } else {
           item.recordatorio = null;
           recordatorioIcon.classList.remove("activo");
           cancelarNotificacion(item, mesActual);
-          mostrarMensajeConfirmacion(div, "Recordatorio desactivado");
+          mostrarMensajeConfirmacion("Recordatorio desactivado");
         }
         guardarDatos();
       });
@@ -311,7 +312,7 @@ function renderizarItems(listId, items) {
           item.recordatorio = null;
           recordatorioIcon.classList.remove("activo");
           cancelarNotificacion(item, mesActual);
-          mostrarMensajeConfirmacion(div, "Recordatorio desactivado");
+          mostrarMensajeConfirmacion("Recordatorio desactivado");
           guardarDatos();
         } else {
           fechaInput.focus();

@@ -159,8 +159,8 @@ h2 {
 }
 
 .item {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
   align-items: center;
   margin-bottom: 0.5rem;
   width: 100%;
@@ -169,8 +169,7 @@ h2 {
 }
 
 input[type="text"],
-input[type="number"],
-input[type="date"] {
+input[type="number"] {
   padding: 8px; /* Aumentado para mejor área táctil */
   min-height: 30px; /* Añadido para cumplir con estándares de accesibilidad */
   touch-action: manipulation;
@@ -189,8 +188,8 @@ input[type="text"].valor-gasto {
 
 .delete-icon,
 .recordatorio-icon {
-  width: 24px; /* Aumentado */
-  height: 24px; /* Aumentado */
+  width: 18px; /* Aumentado */
+  height: 18px; /* Aumentado */
   padding: 8px; /* Añadido para aumentar área táctil */
   touch-action: manipulation;
 }
@@ -295,6 +294,13 @@ button {
 .gasto-options {
   display: flex;
   align-items: center;
+  padding-top: 5px;
+  justify-content: space-between;
+}
+
+.gastos-input {
+  display: flex;
+  align-items: center;
 }
 
 .recurrente-label {
@@ -307,8 +313,6 @@ button {
 }
 
 .recurrente-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
   cursor: pointer;
 }
 
@@ -338,8 +342,11 @@ button {
 
   .gasto-options {
     width: 100%;
-    justify-content: flex-end;
     margin-top: 5px;
+  }
+
+  .gastos-input {
+    flex-direction: column;
   }
 
   .title-wrapper {
@@ -376,7 +383,6 @@ button {
   .delete-icon {
     width: 20px;
     height: 20px;
-    margin-left: auto;
   }
 }
 
@@ -502,7 +508,6 @@ button {
 }
 
 .fecha-recordatorio {
-  padding: 4px;
   border: 1px solid #cbd5e0;
   border-radius: 4px;
   background-color: #f7fafc;
@@ -514,7 +519,7 @@ button {
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .recordatorio-icon:hover {
@@ -522,20 +527,18 @@ button {
 }
 
 .recordatorio-icon img {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+  transition: filter 0.3s ease;
 }
 
 .recordatorio-icon.activo {
-  color: #2f855a;
+  background-color: #c6f6d5;
 }
 
-@media (max-width: 480px) {
-  .recordatorio-container {
-    margin-left: 0;
-    width: 100%;
-    justify-content: flex-end;
-  }
+.recordatorio-icon.activo img {
+  filter: invert(40%) sepia(98%) saturate(427%) hue-rotate(118deg)
+    brightness(96%) contrast(88%);
 }
 
 .recordatorio-options {
@@ -559,14 +562,22 @@ button {
   cursor: pointer;
 }
 
+/* Estilo para el mensaje de confirmación centrado */
 .mensaje-confirmacion {
-  position: absolute;
-  bottom: -25px;
-  left: 0;
-  font-size: 0.8rem;
-  color: #2f855a;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2f855a;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1rem;
+  z-index: 1000;
   opacity: 0;
   transition: opacity 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
 }
 
 .mensaje-confirmacion.visible {
@@ -587,26 +598,40 @@ button {
 
 /* Asegurar que los inputs sean fáciles de tocar en móviles */
 input[type="text"],
-input[type="number"],
-input[type="date"] {
+input[type="number"] {
   padding: 8px; /* Aumentado para mejor área táctil */
   min-height: 30px; /* Añadido para cumplir con estándares de accesibilidad */
   touch-action: manipulation;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: solid 1px rgba(211, 211, 211, 0.5);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: lightgrey; /* Cambia el color del borde a lightblue al hacer clic */
+  outline: none; /* Elimina el contorno predeterminado del navegador */
+}
+
+input[type="date"] {
+  /* padding: 8px; Aumentado para mejor área táctil */
+  min-height: 30px; /* Añadido para cumplir con estándares de accesibilidad */
+  touch-action: manipulation;
+  font-size: 0.8rem;
 }
 
 /* Asegurar que los checkboxes sean fáciles de tocar */
 input[type="checkbox"] {
   width: 20px; /* Aumentado */
   height: 20px; /* Aumentado */
-  min-height: 44px; /* Área táctil mínima */
   touch-action: manipulation;
 }
 
 /* Asegurar que los iconos sean fáciles de tocar */
 .delete-icon,
 .recordatorio-icon {
-  width: 24px; /* Aumentado */
-  height: 24px; /* Aumentado */
+  width: 18px; /* Aumentado */
+  height: 18px; /* Aumentado */
   padding: 8px; /* Añadido para aumentar área táctil */
   touch-action: manipulation;
 }
