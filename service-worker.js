@@ -1,12 +1,15 @@
-const CACHE_NAME = "gastos-app-v1";
+const CACHE_NAME = "gastos-app-v24";
 const urlsToCache = [
   "/",
   "/index.html",
   "/styles.css",
   "/script.js",
   "/manifest.json",
-  "/icon-192x192.png",
-  "/icon-512x512.png",
+  "/robots.txt",
+  "/sitemap.xml",
+  "/icon-96x96.webp",
+  "/icon-512x512.webp",
+  "icon-192x192.webp",
   "/icons/wallet.svg",
   "/icons/income.svg",
   "/icons/expense.svg",
@@ -14,8 +17,10 @@ const urlsToCache = [
   "/icons/chart.svg",
   "/icons/add.svg",
   "/icons/delete.svg",
-  "/icons/notification.svg",
   "/icons/excel.svg",
+  "/supabase.js",
+  "/auth.js",
+  "/og-image.webp",
 ];
 
 // Instalación del Service Worker

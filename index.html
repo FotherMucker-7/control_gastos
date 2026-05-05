@@ -3,172 +3,217 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Control de Gastos</title>
+    <meta name="description" content="Organiza tus finanzas, gestiona tus ingresos y gastos, y visualiza tu balance mensual con facilidad. Exporta a Excel y sincroniza tus datos." />
+    <title>Control de Gastos Personal | Tu aliado financiero</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://control-gastos-app-ps.web.app" />
+    <meta property="og:title" content="Control de Gastos Personal | Tu aliado financiero" />
+    <meta property="og:description" content="Toma el control de tu dinero hoy mismo con nuestra herramienta de gestión financiera personal." />
+    <meta property="og:image" content="https://control-gastos-app-ps.web.app/og-image.webp" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://control-gastos-app-ps.web.app" />
+    <meta property="twitter:title" content="Control de Gastos Personal | Tu aliado financiero" />
+    <meta property="twitter:description" content="Toma el control de tu dinero hoy mismo con nuestra herramienta de gestión financiera personal." />
+    <meta property="twitter:image" content="https://control-gastos-app-ps.web.app/og-image.webp" />
+
+    <link rel="canonical" href="https://control-gastos-app-ps.web.app" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#4f46e5" />
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-192x192.png" />
-    <link rel="apple-touch-icon" href="icon-192x192.png" />
+    <meta name="theme-color" content="#064e3b" />
+    <link rel="icon" type="image/webp" sizes="96x96" href="icon-96x96.webp" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192x192.webp">
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512x512.webp">
     <link href="styles.css" rel="stylesheet" />
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
   </head>
   <body>
-    <div class="container">
-      <div class="title-wrapper">
-        <h1>
-          <img src="icons/wallet.svg" alt="Wallet Icon" class="title-icon" />
-          CONTROL DE GASTOS
-        </h1>
-        <div class="export-container">
-          <select id="export-type" class="export-select">
-            <option value="mes">Mes Actual</option>
-            <option value="todos">Todos los Meses</option>
-          </select>
-          <button id="exportar-excel" class="export-button">
-            <img src="icons/excel.svg" alt="Excel Icon" class="button-icon" />
-            Exportar a Excel
-          </button>
-        </div>
-      </div>
-
-      <div class="month-selector">
-        <button id="prev-month">&lt;&lt;&lt;</button>
-        <span id="current-month">Octubre 2024</span>
-        <button id="next-month">&gt;&gt;&gt;</button>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <h2>
-            <img
-              src="icons/income.svg"
-              alt="Income Icon"
-              class="section-icon"
-            />
-            Ingresos
-          </h2>
-          <div id="ingresos-list" class="item-list">
-            <div class="item">
-              <input
-                type="text"
-                placeholder="Descripción"
-                class="descripcion-ingreso"
-              />
-              <input type="number" placeholder="Valor" class="valor-ingreso" />
-              <img
-                src="icons/delete.svg"
-                alt="Delete Icon"
-                class="delete-icon"
-              />
-            </div>
+    <!-- Pantalla de Autenticación -->
+    <div id="auth-container" class="auth-wrapper" style="display: flex;">
+      <div class="auth-card">
+        <img src="icons/wallet.svg" alt="Logo" class="auth-logo" width="64" height="64" aria-hidden="true" />
+        <h2>Bienvenido</h2>
+        <p>Inicia sesión para sincronizar tus datos</p>
+        <form id="auth-form" class="auth-form">
+          <div class="input-group">
+            <label for="auth-email" class="sr-only">Correo Electrónico</label>
+            <input type="email" id="auth-email" required placeholder="tu@correo.com" aria-label="Correo Electrónico" autocomplete="username email" />
           </div>
-          <button id="agregar-ingreso">
-            <img src="icons/add.svg" alt="Add Icon" class="button-icon" />
-            Agregar
-          </button>
-          <div class="total">
-            <span>TOTAL INGRESOS</span>
-            <span id="total-ingresos">$0</span>
+          <div class="input-group">
+            <label for="auth-password" class="sr-only">Contraseña</label>
+            <input type="password" id="auth-password" required placeholder="Contraseña" aria-label="Contraseña" minlength="6" autocomplete="current-password" />
           </div>
-        </div>
-
-        <div class="card">
-          <h2>
-            <img
-              src="icons/expense.svg"
-              alt="Expense Icon"
-              class="section-icon"
-            />
-            Gastos
-          </h2>
-          <div id="gastos-list" class="item-list">
-            <div class="item">
-              <div class="gastos-input">
-                <input
-                  type="text"
-                  placeholder="Descripción"
-                  class="descripcion-gasto"
-                />
-                <input type="number" placeholder="Valor" class="valor-gasto" />
-              </div>
-              <div class="gasto-options">
-                <label class="recurrente-label">
-                  <input type="checkbox" class="gasto-recurrente" />
-                  <span>Fijo</span>
-                </label>
-                <div class="recordatorio-container">
-                  <input type="date" class="fecha-recordatorio" />
-                  <div class="recordatorio-options">
-                    <span
-                      class="recordatorio-icon"
-                      title="Activar recordatorio"
-                    >
-                      <img
-                        src="icons/notification.svg"
-                        alt="Notification Icon"
-                      />
-                    </span>
-                  </div>
-                </div>
-                <img
-                  src="icons/delete.svg"
-                  alt="Delete Icon"
-                  class="delete-icon"
-                />
-              </div>
-            </div>
+          <div id="forgot-password-link" class="auth-helper">
+            <button type="button" id="auth-forgot-btn" class="auth-link-sm">¿Olvidaste tu contraseña?</button>
           </div>
-          <button id="agregar-gasto">
-            <img src="icons/add.svg" alt="Add Icon" class="button-icon" />
-            Agregar
-          </button>
-          <div class="total">
-            <span>TOTAL GASTOS</span>
-            <span id="total-gastos">$0</span>
+          <div class="input-group" id="auth-password-confirm-group" style="display: none;">
+            <label for="auth-password-confirm" class="sr-only">Confirmar Contraseña</label>
+            <input type="password" id="auth-password-confirm" placeholder="Confirmar Contraseña" aria-label="Confirmar Contraseña" minlength="6" autocomplete="new-password" />
           </div>
-        </div>
-      </div>
-
-      <div class="card balance-card">
-        <h2>
-          <img
-            src="icons/balance.svg"
-            alt="Balance Icon"
-            class="section-icon"
-          />
-          BALANCE
-        </h2>
-        <p id="balance">$0</p>
-      </div>
-
-      <div class="card summary-card">
-        <h2>
-          <img src="icons/chart.svg" alt="Chart Icon" class="section-icon" />
-          RESUMEN DE GASTOS
-        </h2>
-        <div class="summary-content">
-          <div class="summary-section">
-            <h3>Top 5 Gastos</h3>
-            <div id="top-gastos" class="top-gastos-list"></div>
-          </div>
-          <div class="summary-section">
-            <h3>Distribución de Gastos</h3>
-            <div class="gastos-distribucion">
-              <div class="distribucion-item">
-                <span>Gastos Fijos:</span>
-                <span id="total-gastos-fijos">$0</span>
-                <span id="porcentaje-fijos">(0%)</span>
-              </div>
-              <div class="distribucion-item">
-                <span>Gastos Variables:</span>
-                <span id="total-gastos-variables">$0</span>
-                <span id="porcentaje-variables">(0%)</span>
-              </div>
-            </div>
-          </div>
+          <p id="auth-error" class="auth-error sr-only" role="alert"></p>
+          <button type="submit" id="auth-submit-btn" class="auth-btn">Iniciar Sesión</button>
+        </form>
+        <div class="auth-toggle">
+          <span id="auth-toggle-text">¿No tienes cuenta?</span>
+          <button type="button" id="auth-toggle-btn" class="auth-link">Regístrate</button>
         </div>
       </div>
     </div>
-    <div class="mensaje-confirmacion"></div>
+
+    <!-- App Principal (Oculta por defecto hasta loguearse) -->
+    <div id="app-container" class="container" style="display: none;">
+
+      <!-- Cabecera -->
+      <header class="title-wrapper">
+        <h1>
+          <img src="icon-192x192.webp" alt="" class="title-icon" width="36" height="36" aria-hidden="true" />
+          Control de Gastos
+        </h1>
+        <div class="header-actions">
+          <div class="export-container">
+            <label for="export-type" class="sr-only">Seleccionar rango de exportación</label>
+            <select id="export-type" class="export-select" aria-label="Rango de exportación">
+              <option value="mes">Mes Actual</option>
+              <option value="todos">Todos los Meses</option>
+            </select>
+            <button id="exportar-excel" class="export-button" aria-label="Exportar datos a Excel">
+              <img src="icons/excel.svg" alt="" class="button-icon" width="18" height="18" aria-hidden="true" />
+              Exportar
+            </button>
+          </div>
+          <div class="user-profile">
+            <span id="user-email-display" class="user-email sr-only"></span>
+            <button id="logout-btn" class="logout-btn" aria-label="Cerrar sesión" title="Cerrar sesión">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Selector de mes -->
+      <nav class="month-selector" aria-label="Navegación por meses">
+        <button id="prev-month" aria-label="Mes anterior">&lt;&lt;&lt;</button>
+        <span id="current-month" role="status" aria-live="polite">Octubre 2024</span>
+        <button id="next-month" aria-label="Mes siguiente">&gt;&gt;&gt;</button>
+      </nav>
+
+      <!-- Grid: Ingresos y Gastos -->
+      <main>
+        <div class="grid">
+
+          <!-- Ingresos -->
+          <section class="card" aria-labelledby="titulo-ingresos">
+            <h2 id="titulo-ingresos">
+              <img src="icons/income.svg" alt="" class="section-icon" width="22" height="22" aria-hidden="true" />
+              Ingresos
+            </h2>
+            <div id="ingresos-list" class="item-list" role="list">
+              <div class="item" role="listitem">
+                <input type="text" placeholder="Descripción" class="descripcion-ingreso" aria-label="Descripción del ingreso" />
+                <input type="number" placeholder="Valor" class="valor-ingreso" aria-label="Valor del ingreso" />
+                <img src="icons/delete.svg" alt="Eliminar ingreso" class="delete-icon" width="16" height="16" />
+              </div>
+            </div>
+            <button id="agregar-ingreso" aria-label="Agregar nuevo ingreso">
+              <img src="icons/add.svg" alt="" class="button-icon" width="16" height="16" aria-hidden="true" />
+              Agregar
+            </button>
+            <div class="total" aria-live="polite">
+              <span>Total Ingresos</span>
+              <span id="total-ingresos">$0</span>
+            </div>
+          </section>
+
+          <!-- Gastos -->
+          <section class="card" aria-labelledby="titulo-gastos">
+            <h2 id="titulo-gastos">
+              <img src="icons/expense.svg" alt="" class="section-icon" width="22" height="22" aria-hidden="true" />
+              Gastos
+            </h2>
+            <div id="gastos-list" class="item-list" role="list">
+              <div class="item" role="listitem">
+                <div class="gastos-input">
+                  <input type="text" placeholder="Descripción" class="descripcion-gasto" aria-label="Descripción del gasto" />
+                  <input type="number" placeholder="Valor" class="valor-gasto" aria-label="Valor del gasto" />
+                </div>
+                <div class="gasto-options">
+                  <label class="recurrente-label">
+                    <input type="checkbox" class="gasto-recurrente" aria-label="Marcar como gasto fijo" />
+                    <span>Fijo</span>
+                  </label>
+                  <img src="icons/delete.svg" alt="Eliminar gasto" class="delete-icon" width="16" height="16" />
+                </div>
+              </div>
+            </div>
+            <button id="agregar-gasto" aria-label="Agregar nuevo gasto">
+              <img src="icons/add.svg" alt="" class="button-icon" width="16" height="16" aria-hidden="true" />
+              Agregar
+            </button>
+            <div class="total" aria-live="polite">
+              <span>Total Gastos</span>
+              <span id="total-gastos">$0</span>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Balance (Hero) -->
+        <section class="card balance-card" aria-labelledby="titulo-balance">
+          <div class="balance-info">
+            <h2 id="titulo-balance">Balance del Mes</h2>
+            <p id="balance" aria-live="polite">$0</p>
+          </div>
+          <img src="icons/balance.svg" alt="" class="balance-icon-large" width="48" height="48" aria-hidden="true" />
+        </section>
+
+        <!-- Resumen analítico -->
+        <section class="card summary-card" aria-labelledby="titulo-resumen">
+          <h2 id="titulo-resumen">
+            <img src="icons/chart.svg" alt="" class="section-icon" width="22" height="22" aria-hidden="true" />
+            Resumen de Gastos
+          </h2>
+          <div class="summary-content">
+            <div class="summary-section">
+              <h3>Top 5 Gastos</h3>
+              <div id="top-gastos" class="top-gastos-list" role="list" aria-label="Top 5 gastos del mes"></div>
+            </div>
+            <div class="summary-section">
+              <h3>Distribución</h3>
+              <div class="gastos-distribucion">
+                <div class="distribucion-item">
+                  <span>Gastos Fijos</span>
+                  <span id="total-gastos-fijos">$0</span>
+                  <span id="porcentaje-fijos">(0%)</span>
+                </div>
+                <div class="distribucion-item">
+                  <span>Variables</span>
+                  <span id="total-gastos-variables">$0</span>
+                  <span id="porcentaje-variables">(0%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desglose por categoría -->
+          <div class="categorias-section">
+            <h3>Por Categoría</h3>
+            <div id="categorias-list" class="categorias-list" role="list" aria-label="Desglose de gastos por categoría"></div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    
+    <!-- Lógica de Autenticación -->
+    <script src="auth.js"></script>
+
+    <!-- Lógica principal -->
     <script src="script.js"></script>
   </body>
 </html>
