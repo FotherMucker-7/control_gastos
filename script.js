@@ -634,6 +634,8 @@ function cambiarMes(direccion) {
     .toString()
     .padStart(2, "0")}`;
 
+  let datosCambiados = false;
+
   // Copiar gastos fijos al nuevo mes
   if (datos[mesActual] && datos[mesActual].gastos) {
     const gastosFijos = datos[mesActual].gastos.filter(
@@ -656,10 +658,15 @@ function cambiarMes(direccion) {
       gastosFijos.forEach((gasto) => {
         if (!gastosFijosExistentes.includes(gasto.descripcion)) {
           datos[nuevoMes].gastos.push({
+            id: generarId(),
             descripcion: gasto.descripcion,
-            valor: "",
+            valor: gasto.valor,
+            categoria: gasto.categoria || "Otros",
+            notas: gasto.notas || "",
+            fechaCreacion: new Date().toISOString(),
             recurrente: true,
           });
+          datosCambiados = true;
         }
       });
     }
@@ -668,6 +675,10 @@ function cambiarMes(direccion) {
   mesActual = nuevoMes;
   inicializarMes(mesActual);
   actualizarInterfaz();
+  
+  if (datosCambiados) {
+    guardarDatos();
+  }
 }
 
 function actualizarInterfaz() {
